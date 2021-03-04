@@ -33,21 +33,13 @@ function todosReducer(state = defaultState, action) {
         const partA = state.todos.slice(0, idxOfItem);
         const partB = state.todos.slice(idxOfItem + 1);
         todos = [...partA, state.editing, ...partB];
-        /*
-        todos = [
-          ...state.todos.filter(({ id }) => id !== idSelected),
-          state.editing,
-        ];
-        */
       }
       return { ...state, editing: null, todos };
     case RESET_EDITING:
       return { ...state, editing: null };
-    // return action.payload;
     default:
       return state;
   }
-  // return state;
 }
 
 export default todosReducer;

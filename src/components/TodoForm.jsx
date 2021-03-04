@@ -30,10 +30,6 @@ const TodoFormContainer = styled.div`
       : ''}
 `;
 
-// const Dropdown = styled(DropdownBase)`
-//   width: 100px;
-// `;
-
 const TitleField = styled(TextField)`
   flex: 1 0 10%;
 `;
@@ -63,8 +59,6 @@ const TodoForm = ({
   status,
   isNew,
   readOnly,
-  skipValidation,
-  // justConfirming,
   onSubmission,
 }) => {
   const isInitialMount = useRef(true);
@@ -98,8 +92,7 @@ const TodoForm = ({
       isInitialMount.current = false;
       return;
     }
-    // console.log({ titleR, descriptionR, dueDateR, statusR });
-    // console.log({ 'dueDateR.length': dueDateR && dueDateR.length });
+
     let emptyExists = [titleR, descriptionR].some(
       (current) => current && current.length === 0
     );
@@ -136,23 +129,14 @@ const TodoForm = ({
         readOnly={readOnly}
         disabled={readOnly}
       />
-      {/* <TextField
-        placeholder='Status'
-        value={statusR}
-        onChange={useSetter(setStatus)}
-      /> */}
       <StatusDropdown
         placeholder='Status'
         defaultSelectedKey={status}
-        // defaultValue={{ key: statusR, text: statusR }}
         options={statusOptions}
         onChange={(e, item) => {
-          // console.log({ e, item });
-          // console.log(e.currentTarget.value);
           setStatus(item.key);
         }}
         disabled={readOnly}
-        // readOnly={readOnly}
       />
       <FormButton
         text={submitText || (isNew ? 'Create' : 'Save')}
