@@ -47,16 +47,18 @@ function ChangeConfirmation() {
     resetEditing();
   };
 
+  if (!editing) {
+    return <LoadingSection>Loading...</LoadingSection>;
+  }
+
   return (
     <PageContainer>
       <SectionContainer>
-        <SectionTitle>Confirm Edit</SectionTitle>
+        <SectionTitle>
+          Confirm {editing.new ? 'New Todo' : 'Edit of Todo'}
+        </SectionTitle>
 
-        {editing ? (
-          <TodoForm {...editing} readOnly onSubmission={confirmEdit} />
-        ) : (
-          <LoadingSection>Loading...</LoadingSection>
-        )}
+        <TodoForm {...editing} readOnly onSubmission={confirmEdit} />
 
         <ButtonContainer>
           <PrimaryButton
