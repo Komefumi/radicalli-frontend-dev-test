@@ -17,6 +17,9 @@ const themeingConfig = {
   darkToggleColorStateColor: '#cdcdcd',
 
   darkSectionBg: '#121212',
+
+  errorBoundaryOverlayBg: '#f4a073',
+  errorBoundaryInnerBg: '#cd481a',
 };
 
 export default themeingConfig;
