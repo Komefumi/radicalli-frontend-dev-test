@@ -11,6 +11,10 @@ const RESET_EDITING = 'RESET_EDITING';
 const ROUTE_HOME = '/';
 const ROUTE_CHANGE_CONFIRM = '/confirm-change';
 
+const LIGHT = 'LIGHT';
+const DARK = 'DARK';
+const TOGGLE_MODE = 'MODE_TOGGLE';
+
 const statuses = [TODO, ONGOING, STALLED, DONE];
 
 const statusOptions = statuses.reduce(
@@ -27,4 +31,7 @@ export {
   RESET_EDITING,
   ROUTE_HOME,
   ROUTE_CHANGE_CONFIRM,
+  LIGHT,
+  DARK,
+  TOGGLE_MODE,
 };
