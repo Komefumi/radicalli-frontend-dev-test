@@ -24,15 +24,21 @@ function todosReducer(state = defaultState, action) {
       console.log({ 'action.payload': action.payload });
       return { ...state, editing: action.payload };
     case CONFIRM_EDIT:
-      const idSelected = dotProp(state, 'editing.id');
-      const isNew = dotProp(state, 'editing.new');
+      const idSelected = dotProp.get(state, 'editing.id');
+      const isNew = dotProp.get(state, 'editing.new');
       if (isNew) {
         todos = [...state.todos, { ...state.editing, new: undefined }];
       } else {
+        const idxOfItem = state.todos.findIndex(({ id }) => id == idSelected);
+        const partA = state.todos.slice(0, idxOfItem);
+        const partB = state.todos.slice(idxOfItem + 1);
+        todos = [...partA, state.editing, ...partB];
+        /*
         todos = [
           ...state.todos.filter(({ id }) => id !== idSelected),
           state.editing,
         ];
+        */
       }
       return { ...state, editing: null, todos };
     case RESET_EDITING:
