@@ -1,118 +1,78 @@
-import React, { useState } from 'react';
-import {
-  TextField,
-  PrimaryButton,
-  DatePicker,
-  Dropdown,
-} from '@fluentui/react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { nanoid } from 'nanoid';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import PageContainer from '../components/PageContainer';
 import SectionContainer from '../components/SectionContainer';
 import SectionTitle from '../components/SectionTitle';
+import TodoForm from '../components/TodoForm';
+import { ROUTE_CHANGE_CONFIRM, SET_EDITING } from '../constants';
 
-import { MockTodos } from '../mock_data/todos';
-import { statuses, statusOptions } from '../constants';
-
-const TodoFormContainer = styled.div`
-  display: flex;
-`;
-
-const TodoForm = ({
-  title,
-  description,
-  dueDate,
-  status,
-  isNew,
-  justConfirming,
-}) => {
-  const [titleR, setTitle] = useState(title);
-  const [descriptionR, setDescription] = useState(description);
-  const [dueDateR, setDueDate] = useState(dueDate);
-  const [statusR, setStatus] = useState(status);
-
-  const useSetter = (setter) => (e) => {
-    setter(e.target.value);
-  };
-
+const CreationSection = ({ addTodoUsingData }) => {
   return (
-    <TodoFormContainer>
-      <TextField
-        placeholder='Title'
-        value={titleR}
-        onChange={useSetter(setTitle)}
-        contentEditable={!justConfirming}
-      />
-      <TextField
-        placeholder='Description'
-        value={descriptionR}
-        onChange={useSetter(setDescription)}
-        contentEditable={!justConfirming}
-      />
-      <DatePicker
-        placeholder='Due Date'
-        value={dueDateR}
-        onChange={useSetter(setDueDate)}
-        contentEditable={!justConfirming}
-      />
-      {/* <TextField
-        placeholder='Status'
-        value={statusR}
-        onChange={useSetter(setStatus)}
-      /> */}
-      <Dropdown
-        placeholder='Status'
-        defaultValue={statusR}
-        options={statusOptions}
-        onChange={useSetter(setStatus)}
-        contentEditable={!justConfirming}
-      />
-      {!justConfirming && <PrimaryButton text={isNew ? 'Create' : 'Save'} />}
-    </TodoFormContainer>
+    <SectionContainer>
+      <SectionTitle>Create Todo</SectionTitle>
+      <TodoForm isNew onSubmission={addTodoUsingData} />
+    </SectionContainer>
   );
 };
 
-const stringType = PropTypes.string;
-
-TodoForm.propTypes = {
-  title: stringType,
-  description: stringType,
-  dueDate: PropTypes.instanceOf(Date),
-  status: PropTypes.oneOf(statuses),
-  isNew: PropTypes.bool,
-};
-
-const CreationSection = () => (
-  <SectionContainer>
-    <SectionTitle>Create Todo</SectionTitle>
-    <TodoForm isNew />
-  </SectionContainer>
-);
-
-const ListSection = ({ todos }) => {
-  console.log(todos);
-
+const ListSection = ({ todos, setForEditConfirm }) => {
   return (
     <SectionContainer>
       <SectionTitle>Todos Created</SectionTitle>
       {todos.map((current) => (
-        <TodoForm {...current} />
+        <TodoForm
+          key={current.id}
+          {...current}
+          onSubmission={setForEditConfirm}
+        />
       ))}
     </SectionContainer>
   );
 };
 
-function TodoListing() {
-  const [mockTodos] = useState(MockTodos());
-  console.log(mockTodos);
-
+function TodoListing({ todos, editing, setForEditConfirm, addTodoUsingData }) {
+  const history = useHistory();
+  useEffect(() => {
+    if (editing !== null) {
+      history.push(ROUTE_CHANGE_CONFIRM);
+    }
+    return () => {};
+  }, [editing, history]);
   return (
     <PageContainer>
-      <CreationSection />
-      <ListSection todos={mockTodos} />
+      <CreationSection addTodoUsingData={addTodoUsingData} />
+      <ListSection todos={todos} setForEditConfirm={setForEditConfirm} />
     </PageContainer>
   );
 }
 
-export default TodoListing;
+const TodoListingConnected = connect(
+  (state) => {
+    const {
+      todoState: { todos, editing },
+    } = state;
+    return {
+      todos: todos,
+      editing: editing,
+    };
+  },
+  (dispatch) => {
+    return {
+      setForEditConfirm: (payload) => {
+        console.log({ payload });
+        dispatch({ type: SET_EDITING, payload });
+      },
+      addTodoUsingData: (payload) => {
+        dispatch({
+          type: SET_EDITING,
+          payload: { ...payload, id: nanoid(), new: true },
+        });
+      },
+    };
+  }
+)(TodoListing);
+
+export default TodoListingConnected;
