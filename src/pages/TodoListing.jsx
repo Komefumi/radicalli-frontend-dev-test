@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import PageContainer from '../components/PageContainer';
@@ -8,8 +8,17 @@ import SectionContainer from '../components/SectionContainer';
 import SectionTitle from '../components/SectionTitle';
 import TodoForm from '../components/TodoForm';
 import { ROUTE_CHANGE_CONFIRM, SET_EDITING } from '../constants';
+import { useGetTodoState } from '../hooks';
 
-const CreationSection = ({ addTodoUsingData }) => {
+const CreationSection = () => {
+  const dispatch = useDispatch();
+  const addTodoUsingData = (payload) => {
+    dispatch({
+      type: SET_EDITING,
+      payload: { ...payload, id: nanoid(), new: true },
+    });
+  };
+
   return (
     <SectionContainer>
       <SectionTitle>Create Todo</SectionTitle>
@@ -18,7 +27,14 @@ const CreationSection = ({ addTodoUsingData }) => {
   );
 };
 
-const ListSection = ({ todos, setForEditConfirm }) => {
+const ListSection = () => {
+  const { todos } = useGetTodoState();
+  const dispatch = useDispatch();
+
+  const setForEditConfirm = (payload) => {
+    dispatch({ type: SET_EDITING, payload });
+  };
+
   return (
     <SectionContainer>
       <SectionTitle>Todos Created</SectionTitle>
@@ -33,46 +49,23 @@ const ListSection = ({ todos, setForEditConfirm }) => {
   );
 };
 
-function TodoListing({ todos, editing, setForEditConfirm, addTodoUsingData }) {
+function TodoListing() {
+  const { editing } = useGetTodoState();
   const history = useHistory();
+
   useEffect(() => {
     if (editing !== null) {
       history.push(ROUTE_CHANGE_CONFIRM);
     }
     return () => {};
   }, [editing, history]);
+
   return (
     <PageContainer>
-      <CreationSection addTodoUsingData={addTodoUsingData} />
-      <ListSection todos={todos} setForEditConfirm={setForEditConfirm} />
+      <CreationSection />
+      <ListSection />
     </PageContainer>
   );
 }
 
-const TodoListingConnected = connect(
-  (state) => {
-    const {
-      todoState: { todos, editing },
-    } = state;
-    return {
-      todos: todos,
-      editing: editing,
-    };
-  },
-  (dispatch) => {
-    return {
-      setForEditConfirm: (payload) => {
-        console.log({ payload });
-        dispatch({ type: SET_EDITING, payload });
-      },
-      addTodoUsingData: (payload) => {
-        dispatch({
-          type: SET_EDITING,
-          payload: { ...payload, id: nanoid(), new: true },
-        });
-      },
-    };
-  }
-)(TodoListing);
-
-export default TodoListingConnected;
+export default TodoListing;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PrimaryButton } from '@fluentui/react';
 import styled from 'styled-components';
@@ -8,18 +8,36 @@ import PageContainer from '../components/PageContainer';
 import SectionContainer from '../components/SectionContainer';
 import SectionTitle from '../components/SectionTitle';
 import TodoForm from '../components/TodoForm';
-import { CONFIRM_EDIT, RESET_EDITING } from '../constants';
+
+import { useGetTodoState } from '../hooks';
+import { CONFIRM_EDIT, RESET_EDITING, ROUTE_HOME } from '../constants';
 
 const ButtonContainer = styled.section`
   margin-top: 2em;
   display: block;
 `;
 
-function ChangeConfirmation({ editing, confirmEdit, resetEditing }) {
+const LoadingSection = styled.section`
+  font-size: 2em;
+  width: 100%;
+`;
+
+function ChangeConfirmation() {
   const history = useHistory();
+  const { editing } = useGetTodoState();
+  const dispatch = useDispatch();
+
+  const confirmEdit = () => {
+    dispatch({ type: CONFIRM_EDIT });
+  };
+
+  const resetEditing = () => {
+    dispatch({ type: RESET_EDITING });
+  };
+
   useEffect(() => {
     if (editing === null) {
-      history.goBack();
+      history.replace(ROUTE_HOME);
     }
 
     return () => {};
@@ -30,41 +48,26 @@ function ChangeConfirmation({ editing, confirmEdit, resetEditing }) {
   };
 
   return (
-    editing && (
-      <PageContainer>
-        <SectionContainer>
-          <SectionTitle>Confirm Edit</SectionTitle>
+    <PageContainer>
+      <SectionContainer>
+        <SectionTitle>Confirm Edit</SectionTitle>
 
+        {editing ? (
           <TodoForm {...editing} readOnly onSubmission={confirmEdit} />
+        ) : (
+          <LoadingSection>Loading...</LoadingSection>
+        )}
 
-          <ButtonContainer>
-            <PrimaryButton text='Return' onClick={signalEditingEnd} />
-          </ButtonContainer>
-        </SectionContainer>
-      </PageContainer>
-    )
+        <ButtonContainer>
+          <PrimaryButton
+            disabled={!editing}
+            text='Return'
+            onClick={signalEditingEnd}
+          />
+        </ButtonContainer>
+      </SectionContainer>
+    </PageContainer>
   );
 }
 
-const ChangeConfirmationConnected = connect(
-  (state) => {
-    const {
-      todoState: { editing },
-    } = state;
-    return {
-      editing: editing,
-    };
-  },
-  (dispatch) => {
-    return {
-      confirmEdit: () => {
-        dispatch({ type: CONFIRM_EDIT });
-      },
-      resetEditing: () => {
-        dispatch({ type: RESET_EDITING });
-      },
-    };
-  }
-)(ChangeConfirmation);
-
-export default ChangeConfirmationConnected;
+export default ChangeConfirmation;

@@ -2,8 +2,15 @@ import styled from 'styled-components';
 
 const SectionContainer = styled.section`
   text-align: left;
-  background-color: #fefefe;
   padding: 3em;
 `;
 
-export default SectionContainer;
+const SectionContainerUsable = ({ children }) => {
+  return (
+    <SectionContainer className='todo_app_section_container'>
+      {children}
+    </SectionContainer>
+  );
+};
+
+export default SectionContainerUsable;
