@@ -29,7 +29,7 @@ function todosReducer(state = defaultState, action) {
       if (isNew) {
         todos = [...state.todos, { ...state.editing, new: undefined }];
       } else {
-        const idxOfItem = state.todos.findIndex(({ id }) => id == idSelected);
+        const idxOfItem = state.todos.findIndex(({ id }) => id === idSelected);
         const partA = state.todos.slice(0, idxOfItem);
         const partB = state.todos.slice(idxOfItem + 1);
         todos = [...partA, state.editing, ...partB];
