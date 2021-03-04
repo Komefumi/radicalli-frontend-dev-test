@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/radicalli-frontend-dev-test/static/css/main.aa29e785.chunk.css",
+    "main.js": "/radicalli-frontend-dev-test/static/js/main.4fef9e80.chunk.js",
+    "main.js.map": "/radicalli-frontend-dev-test/static/js/main.4fef9e80.chunk.js.map",
+    "runtime-main.js": "/radicalli-frontend-dev-test/static/js/runtime-main.3d8f6b77.js",
+    "runtime-main.js.map": "/radicalli-frontend-dev-test/static/js/runtime-main.3d8f6b77.js.map",
+    "static/js/2.87ed02d8.chunk.js": "/radicalli-frontend-dev-test/static/js/2.87ed02d8.chunk.js",
+    "static/js/2.87ed02d8.chunk.js.map": "/radicalli-frontend-dev-test/static/js/2.87ed02d8.chunk.js.map",
+    "static/js/3.93a313b2.chunk.js": "/radicalli-frontend-dev-test/static/js/3.93a313b2.chunk.js",
+    "static/js/3.93a313b2.chunk.js.map": "/radicalli-frontend-dev-test/static/js/3.93a313b2.chunk.js.map",
+    "index.html": "/radicalli-frontend-dev-test/index.html",
+    "static/css/main.aa29e785.chunk.css.map": "/radicalli-frontend-dev-test/static/css/main.aa29e785.chunk.css.map",
+    "static/js/2.87ed02d8.chunk.js.LICENSE.txt": "/radicalli-frontend-dev-test/static/js/2.87ed02d8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3d8f6b77.js",
+    "static/js/2.87ed02d8.chunk.js",
+    "static/css/main.aa29e785.chunk.css",
+    "static/js/main.4fef9e80.chunk.js"
+  ]
+}
