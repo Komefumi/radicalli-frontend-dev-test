@@ -14,6 +14,7 @@ import themeingConfig from './config/themeing';
 import { store } from './store';
 
 import { ROUTE_CHANGE_CONFIRM, ROUTE_HOME, TOGGLE_MODE } from './constants';
+import SimpleErrorBoundary from './components/SimpleErrorBoundary';
 
 const AppElement = styled.main`
   display: grid;
@@ -90,6 +91,7 @@ function App() {
           <ToggleContainer>
             <Toggle
               // label='Mode'
+
               defaultChecked={false}
               onText='Dark'
               offText='Light'
@@ -110,10 +112,12 @@ function App() {
   );
 }
 
-const StoreProvidedApp = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
+const StoreProvidedAndErrorBoundedApp = () => (
+  <SimpleErrorBoundary>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </SimpleErrorBoundary>
 );
 
-export default StoreProvidedApp;
+export default StoreProvidedAndErrorBoundedApp;
