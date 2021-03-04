@@ -7,10 +7,11 @@ import {
   RESET_EDITING,
 } from '../constants';
 
-import { MockTodos as createMockTodos } from '../mock_data/todos';
+// import { MockTodos as createMockTodos } from '../mock_data/todos';
 
 const defaultState = {
-  todos: createMockTodos(),
+  todos: [],
+  // todos: createMockTodos(),
   editing: null,
 };
 
