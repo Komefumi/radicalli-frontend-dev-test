@@ -94,9 +94,10 @@ const TodoForm = ({
     }
 
     let emptyExists = [titleR, descriptionR].some(
-      (current) => current && current.length === 0
+      (current) => !current || current.length === 0
     );
     emptyExists = emptyExists || !dueDateR;
+    emptyExists = emptyExists || !statusR;
     if (emptyExists) {
       setIsValid(false);
     } else {
@@ -107,7 +108,7 @@ const TodoForm = ({
   }, [titleR, descriptionR, dueDateR, statusR, readOnly]);
 
   return (
-    <TodoFormContainer readOnly={readOnly}>
+    <TodoFormContainer className='todo_app_todo_form' readOnly={readOnly}>
       <TitleField
         placeholder='Title'
         value={titleR}
